@@ -1,6 +1,6 @@
 This is an interface to send live weather data obtained from
 the Davis Vantage Vue personal weather station up to the 
-weatherundergound.com. Data is transferred via the wundergound
+Weather Underground. Data is transferred via the wundergound
 API which is documented here: 
 http://wiki.wunderground.com/index.php/PWS_-_Upload_Protocol
 
