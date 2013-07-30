@@ -1,11 +1,11 @@
 This is an interface to send live weather data obtained from
 the Davis Vantage Vue personal weather station up to the 
-Weather Underground. Data is transferred via the wundergound
+Weather Underground. Data is transferred via the wunderground
 API which is documented here: 
 http://wiki.wunderground.com/index.php/PWS_-_Upload_Protocol
 
 A serial interface must be used off of the Vantage Vue, this can
-be a wired or wireless interface. A stanfard v1 or v2 Xbee can
+be a wired or wireless interface. A standard v1 or v2 XBee can
 be directly fitted to the Vantage Vue, more information is 
 available here: 
 http://bradthx.blogspot.com/2013/02/xbee-interface-for-davis-vantage-vue.html
