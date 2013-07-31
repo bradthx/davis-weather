@@ -9,3 +9,28 @@ be a wired or wireless interface. A standard v1 or v2 XBee can
 be directly fitted to the Vantage Vue, more information is 
 available here: 
 http://bradthx.blogspot.com/2013/02/xbee-interface-for-davis-vantage-vue.html
+
+I have made a board that fits into the back of the Vantage Vue PWS
+console. The gerbers for this board are included here if you wish
+to use it. The board is simple, it can be etched at home. If you 
+want to have it professionally made, I recommend oshpark.com.
+
+The local side will also need a USB or serial XBee interface to connect
+to the machine or device that will be running the python code. You
+can make a simple interface or purchase one from suppliers like
+sparkfun.com.
+
+The code to connect to the Vantage Vue is wrote in python. The easiest 
+method for executing is to run it via a cron job for periodic updates
+to wunderground.com. If using the wundergound rapid fire servers,
+the bash script here can be used to upload data every 10 seconds. 
+
+A note on compatibility. This code and hardware has been tested on the
+Davis Vantage VUE PWS console with firmware version 2.x. There are 
+reports that the firmware version 3.0 and higher has the serial 
+interface disabled preventing use of serial communication. Please 
+check your firmware version. The API for other Davis weather stations
+is nearly identical to the Vantage VUE, this code should work for
+other Davis models with little or no modification.
+
+
