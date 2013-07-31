@@ -26,7 +26,8 @@ sparkfun.com.
 The code to connect to the Vantage Vue is wrote in python. The easiest 
 method for executing is to run it via a cron job for periodic updates
 to wunderground.com. If using the wundergound rapid fire servers,
-the bash script here can be used to upload data every 10 seconds. 
+the bash script here can be used to upload data every 10 seconds
+when run by a cron every minute.
 
 A note on compatibility. This code and hardware has been tested on the
 Davis Vantage VUE PWS console with firmware version 2.x. There are 
