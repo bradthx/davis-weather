@@ -15,6 +15,9 @@ console. The gerbers for this board are included here if you wish
 to use it. The board is simple, it can be etched at home. If you 
 want to have it professionally made, I recommend oshpark.com.
 
+The 2.0mm pitch 2x10 connector that mates with the Vantage console is 
+available from Digikey, is is part# 952-1361-5-ND
+
 The local side will also need a USB or serial XBee interface to connect
 to the machine or device that will be running the python code. You
 can make a simple interface or purchase one from suppliers like
