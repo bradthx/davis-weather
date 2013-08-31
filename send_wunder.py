@@ -97,7 +97,7 @@ print "Start Run"
 from decimal import *
 import serial 
 import time
-import urllib2
+import urllib2, urllib
 import datetime
 
 ser = serial.Serial("/dev/ttyS0", 19200, timeout=1)
@@ -210,6 +210,9 @@ print "Daily rain (in)     : %.2f" % rainDaily
 print "UTC Time            : %s" % utcTime
 print "CRC Check           : %d" % crc_flag
 #Url to wunderground
+
+utcTime = urllib.quote(utcTime)
+
 
 wunderUrl = ('http://rtupdate.wunderground.com/weatherstation/updateweatherstation.php?ID=<station_id>&PASSWORD=<api-password>&dateutc=') + str(utcTime) + ('&tempf=')+ str(outsideTemp) + ('&humidity=')+ str(outsideHum) + ('&baromin=')+ str(curBar) + ('&winddir=')+ str(windDir) +('&windspeedmph=')+ str(windSpeed) + ('&windgustmph=') + str(windGust) + ('&dewptf=') + str(dewPoint) +('&rainin=') + str(rainHourly) + ('&dailyrainin=') + str(rainDaily) +('&&realtime=1&rtfreq=10')
 
