@@ -138,7 +138,8 @@ outsideTemp = outsideTemp.encode('hex')
 outsideTemp = hex_to_integer(outsideTemp)
 outsideTemp = Decimal(outsideTemp) / Decimal('10')
 #outsideTemp = Decimal('130.0')a # FOR TESTING 
-
+if outsideTemp > 1000:
+	outsideTemp = outsideTemp - 6553
 
 #Wind Speed, one byte unsigned direct value in mph
 windSpeed = s[15]
@@ -163,6 +164,9 @@ dewPoint = dewPointHighByte + dewPointLowByte
 dewPoint = dewPoint.encode('hex')
 dewPoint = hex_to_integer(dewPoint)
 dewPoint = Decimal(dewPoint)
+if dewPoint > 1000:
+	dewPoint = dewPoint - 65535
+
 
 #Wind Gust 10 min resolution, two byte val .1 resolution
 
