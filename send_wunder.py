@@ -213,7 +213,6 @@ print "CRC Check           : %d" % crc_flag
 
 quoted_dt = urllib.quote(utcTime)
 
-#http://rtupdate.wunderground.com/weatherstation/updateweatherstation.php?ID=KMIWESTB14&PASSWORD=strd965&dateutc=
 
 wunderUrl = ('http://rtupdate.wunderground.com/weatherstation/updateweatherstation.php?ID=[id]&PASSWORD=[pass]&dateutc=') + str(quoted_dt) + ('&tempf=')+ str(outsideTemp) + ('&humidity=')+ str(outsideHum) + ('&baromin=')+ str(curBar) + ('&winddir=')+ str(windDir) +('&windspeedmph=')+ str(windSpeed) + ('&windgustmph=') + str(windGust) + ('&dewptf=') + str(dewPoint) +('&rainin=') + str(rainHourly) + ('&dailyrainin=') + str(rainDaily) +('&&realtime=1&rtfreq=10')
 print wunderUrl
