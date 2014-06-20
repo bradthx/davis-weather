@@ -1,21 +1,4 @@
-# Davis Vantage VUE data parser for the Weather Underground API
-#Copyright (C) 2013 Brad Boegler
-#
-#This program is free software; you can redistribute it and/or
-#modify it under the terms of the GNU General Public License
-#as published by the Free Software Foundation; either version 2
-#of the License, or (at your option) any later version.
-#
-#This program is distributed in the hope that it will be useful,
-#but WITHOUT ANY WARRANTY; without even the implied warranty of
-#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#GNU General Public License for more details.
-#
-#You should have received a copy of the GNU General Public License
-#along with this program; if not, write to the Free Software
-#Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-
-
+# Davis Vantage VUE data parser
 # Note offsets start at 1, 0=1, 1=2, etc
 # API doc: http://www.davisnet.com/support/weather/download
 # /VantageSerialProtocolDocs_v250.pdf
@@ -97,16 +80,21 @@ print "Start Run"
 from decimal import *
 import serial 
 import time
-import urllib2, urllib
+import urllib, urllib2
 import datetime
 
 ser = serial.Serial("/dev/ttyS0", 19200, timeout=1)
+#ser.write("\n \n \n")
+
+
 
 print "Get Data"
+
 ser.write("LPS 2 1\n")
 	
 s = ser.read(100) 
 print len(s)
+	
 
 ser.close()
 
@@ -125,6 +113,7 @@ curBar = curBarHighByte + curBarLowByte
 curBar = curBar.encode('hex')
 curBar = hex_to_integer(curBar)
 curBar = Decimal(curBar) / Decimal('1000.00')
+curBar = float(curBar)
 
 #Outside humidity, one byte, direct percent
 outsideHum = s[34]
@@ -137,9 +126,12 @@ outsideTemp = outsideTempHighByte + outsideTempLowByte
 outsideTemp = outsideTemp.encode('hex')
 outsideTemp = hex_to_integer(outsideTemp)
 outsideTemp = Decimal(outsideTemp) / Decimal('10')
-#outsideTemp = Decimal('130.0')a # FOR TESTING 
 if outsideTemp > 1000:
-	outsideTemp = outsideTemp - 6553
+        outsideTemp = outsideTemp - 6553
+
+
+#outsideTemp = Decimal('130.0')a # FOR TESTING 
+
 
 #Wind Speed, one byte unsigned direct value in mph
 windSpeed = s[15]
@@ -165,7 +157,7 @@ dewPoint = dewPoint.encode('hex')
 dewPoint = hex_to_integer(dewPoint)
 dewPoint = Decimal(dewPoint)
 if dewPoint > 1000:
-	dewPoint = dewPoint - 65535
+        dewPoint = dewPoint - 65535
 
 
 #Wind Gust 10 min resolution, two byte val .1 resolution
@@ -195,6 +187,7 @@ rainDaily = Decimal(rainDaily) / Decimal('100')
 
 #Print converted data
 
+
 #CRC check
 crc_flag = 0
 crc_flag = check_crc(s[1:100])
@@ -202,9 +195,12 @@ crc_flag = check_crc(s[1:100])
 #CRC should always be zero
 
 
+
+
+
 print "Outside Temp        : %.2f" % outsideTemp
 print "Outside Humidity    : %d" % outsideHum
-print "Barometric Pressure : %.2f" % curBar
+print "Barometric Pressure : %.3f" % curBar
 print "Wind Speed          : %d" % windSpeed
 print "10 Minute Wind Gust : %.2f" % windGust
 print "Wind Direction      : %d" % windDir
@@ -215,19 +211,20 @@ print "UTC Time            : %s" % utcTime
 print "CRC Check           : %d" % crc_flag
 #Url to wunderground
 
-utcTime = urllib.quote(utcTime)
+quoted_dt = urllib.quote(utcTime)
 
+#http://rtupdate.wunderground.com/weatherstation/updateweatherstation.php?ID=KMIWESTB14&PASSWORD=strd965&dateutc=
 
-wunderUrl = ('http://rtupdate.wunderground.com/weatherstation/updateweatherstation.php?ID=<station_id>&PASSWORD=<api-password>&dateutc=') + str(utcTime) + ('&tempf=')+ str(outsideTemp) + ('&humidity=')+ str(outsideHum) + ('&baromin=')+ str(curBar) + ('&winddir=')+ str(windDir) +('&windspeedmph=')+ str(windSpeed) + ('&windgustmph=') + str(windGust) + ('&dewptf=') + str(dewPoint) +('&rainin=') + str(rainHourly) + ('&dailyrainin=') + str(rainDaily) +('&&realtime=1&rtfreq=10')
+wunderUrl = ('http://rtupdate.wunderground.com/weatherstation/updateweatherstation.php?ID=[id]&PASSWORD=[pass]&dateutc=') + str(quoted_dt) + ('&tempf=')+ str(outsideTemp) + ('&humidity=')+ str(outsideHum) + ('&baromin=')+ str(curBar) + ('&winddir=')+ str(windDir) +('&windspeedmph=')+ str(windSpeed) + ('&windgustmph=') + str(windGust) + ('&dewptf=') + str(dewPoint) +('&rainin=') + str(rainHourly) + ('&dailyrainin=') + str(rainDaily) +('&&realtime=1&rtfreq=10')
+print wunderUrl
 
-if crc_flag != Decimal(0) or outsideTemp > Decimal('120') or windGust > Decimal('100') or outsideHum > 101 or windSpeed > 100 or rainHourly > Decimal('3') or rainDaily > Decimal('10'):
+if crc_flag != Decimal(0) or outsideTemp > Decimal('120') or windGust > Decimal('100') or outsideHum > 101 or windSpeed > 100 or rainHourly > Decimal('3') or rainDaily > Decimal('10') or curBar < 20:
     print "NOT_OK - No Upload "
 else:
     print "OK - Data Uploaded"
     result = urllib2.urlopen(wunderUrl)
 
 
-print wunderUrl
 
 
 
